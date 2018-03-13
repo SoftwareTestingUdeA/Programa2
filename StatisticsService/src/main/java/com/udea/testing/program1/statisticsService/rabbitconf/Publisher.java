@@ -18,10 +18,6 @@ public class Publisher {
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(RabbitConf.class);
     RabbitTemplate rabbitTemplate = applicationContext.getBean(RabbitTemplate.class);
 
-//    public void publishMessage(String exchange, String routingKey, String message) {
-//        rabbitTemplate.convertAndSend(exchange, routingKey, message);
-//    }
-
     public void publishMessageAsync(String exchange, String routingKey, String message) {
         CompletableFuture.runAsync(() -> rabbitTemplate.convertAndSend(exchange, routingKey, message));
     }

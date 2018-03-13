@@ -7,25 +7,30 @@ package com.udea.testing.program1.statisticsAPI.model;
  * @version 0.1
  */
 public class Node {
-    private Double number;
+    private Double x;
+    private Double y;
     private Node link;
 
-    public Node() {
-        this.number = 0.0;
-        this.link = null;
-    }
-
-    public Node(Double number, Node link) {
-        this.number = number;
+    public Node(Double x, Double y, Node link) {
+        this.x = x;
+        this.y = y;
         this.link = link;
     }
 
-    public Double getNumber() {
-        return number;
+    public Double getX() {
+        return x;
     }
 
-    public void setNumber(Double number) {
-        this.number = number;
+    public void setX(Double x) {
+        this.x = x;
+    }
+
+    public Double getY() {
+        return y;
+    }
+
+    public void setY(Double y) {
+        this.y = y;
     }
 
     public Node getLink() {

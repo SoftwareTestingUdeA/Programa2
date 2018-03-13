@@ -1,31 +1,23 @@
 package com.udea.testing.program1.statisticsService.model;
 
-import java.util.List;
-
 /**
  * @author William Hincapie - daemonsoft@gmail.com
  * @author Juan Pablo Ospina - jpoh97@gmail.com
  * @author Daniel Martinez - danielmartinezg95@gmail.com
- * @version 0.1
+ * @version 0.3
  */
 public class NumberSet {
     String uuid;
-    List<Double> set;
+    Double[] setX;
+    Double[] setY;
     NumberLinkedList list;
-    Double mean;
-    Double stdDeviation;
+    Double meanX;
+    Double meanY;
+    Double correlation;
+    Double beta0;
+    Double beta1;
 
     public NumberSet() {
-        mean = 0.0;
-        stdDeviation = 0.0;
-    }
-
-    public List<Double> getSet() {
-        return set;
-    }
-
-    public void setSet(List<Double> set) {
-        this.set = set;
     }
 
     public String getUuid() {
@@ -36,6 +28,22 @@ public class NumberSet {
         this.uuid = uuid;
     }
 
+    public Double[] getSetX() {
+        return setX;
+    }
+
+    public void setSetX(Double[] setX) {
+        this.setX = setX;
+    }
+
+    public Double[] getSetY() {
+        return setY;
+    }
+
+    public void setSetY(Double[] setY) {
+        this.setY = setY;
+    }
+
     public NumberLinkedList getList() {
         return list;
     }
@@ -44,57 +52,76 @@ public class NumberSet {
         this.list = list;
     }
 
-    public Double getMean() {
-        return mean;
+    public Double getMeanX() {
+        return meanX;
     }
 
-    public void setMean(Double mean) {
-        this.mean = mean;
+    public void setMeanX(Double meanX) {
+        this.meanX = meanX;
     }
 
-    public Double getStdDeviation() {
-        return stdDeviation;
+    public Double getMeanY() {
+        return meanY;
     }
 
-    public void setStdDeviation(Double stdDeviation) {
-        this.stdDeviation = stdDeviation;
+    public void setMeanY(Double meanY) {
+        this.meanY = meanY;
     }
 
-    /**
-     * Method used to calculate the mean of a set of n numbers
-     */
+    public Double getCorrelation() {
+        return correlation;
+    }
+
+    public void setCorrelation(Double correlation) {
+        this.correlation = correlation;
+    }
+
+    public Double getBeta0() {
+        return beta0;
+    }
+
+    public void setBeta0(Double beta0) {
+        this.beta0 = beta0;
+    }
+
+    public Double getBeta1() {
+        return beta1;
+    }
+
+    public void setBeta1(Double beta1) {
+        this.beta1 = beta1;
+    }
+
     public void calculateMean() {
         Node node = this.getList().getFirst();
-        this.setMean(0.0);
+        this.setMeanX(0.0);
+        this.setMeanY(0.0);
         while (node != null) {
-            this.mean = this.mean + node.getNumber();
+            this.meanX = this.meanX + node.getX();
+            this.meanY = this.meanY + node.getY();
+
             node = node.getLink();
         }
-
-        this.mean = this.mean / this.getList().getSize();
+        this.meanX = this.meanX / this.getList().getSize();
+        this.meanY = this.meanY / this.getList().getSize();
     }
 
-    /**
-     * Method used to calculate the standard deviation of a set of n numbers
-     */
-    public void calculateStdDeviation() {
+    public void calculateCorrelation() {
+        this.calculateBeta();
+
+    }
+
+    public void calculateBeta() {
+        this.calculateMean();
         Node node = this.getList().getFirst();
-        this.setStdDeviation(0.0);
+        Double sumXY = 0.0;
+        Double sqrtX = 0.0;
         while (node != null) {
-            this.stdDeviation = this.stdDeviation + Math.pow(node.getNumber() - this.getMean(), 2.0);
+            sumXY = sumXY + node.getX() * node.getY();
+            sqrtX = sqrtX + Math.pow(node.getX(), 2.0);
             node = node.getLink();
         }
-        this.stdDeviation = Math.sqrt(stdDeviation / (this.getList().getSize() - 1));
-    }
-
-    /**
-     * Method that generate a linked list from an array of n numbers
-     */
-    public void generateList() {
-        this.setList(new NumberLinkedList());
-        if (null != set)
-            for (Double d : set) {
-                this.getList().insert(d);
-            }
+        this.beta1 = (sumXY - this.getList().getSize() * this.getMeanX() * this.getMeanY()) / (sqrtX - this.getList().getSize() * Math.pow(this.getMeanX(), 2.0));
+        this.beta0 = this.getMeanY() - this.getBeta1()*this.getMeanX();
     }
 }

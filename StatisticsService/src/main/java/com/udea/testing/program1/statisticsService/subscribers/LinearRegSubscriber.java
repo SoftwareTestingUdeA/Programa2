@@ -1,7 +1,7 @@
 package com.udea.testing.program1.statisticsService.subscribers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.udea.testing.program1.statisticsService.model.Node;
+import com.udea.testing.program1.statisticsService.model.NumberLinkedList;
 import com.udea.testing.program1.statisticsService.model.NumberSet;
 import com.udea.testing.program1.statisticsService.rabbitconf.Publisher;
 import org.springframework.amqp.core.Message;
@@ -17,20 +17,19 @@ import java.io.IOException;
  * @version 0.1
  */
 @Component
-public class MeanSubscriber implements MessageListener {
+public class LinearRegSubscriber implements MessageListener {
 
     @Override
     public void onMessage(Message message) {
-
         ObjectMapper objectMapper = new ObjectMapper();
         Publisher publisher = new Publisher();
         NumberSet numberSet = null;
         try {
             numberSet = objectMapper.readValue(message.getBody(), NumberSet.class);
-            numberSet.generateList();
-            numberSet.calculateMean();
+            numberSet.setList(new NumberLinkedList(numberSet.getSetX(), numberSet.getSetY()));
+            numberSet.calculateCorrelation();
             numberSet.setList(null);
-            publisher.publishMessageAsync("udea.testing.result", "mean", objectMapper.writeValueAsString(numberSet));
+            publisher.publishMessageAsync("udea.testing.result", "linear", objectMapper.writeValueAsString(numberSet));
         } catch (IOException e) {
             e.printStackTrace();
         }

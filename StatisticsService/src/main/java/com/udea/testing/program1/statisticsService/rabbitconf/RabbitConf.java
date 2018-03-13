@@ -1,8 +1,7 @@
 package com.udea.testing.program1.statisticsService.rabbitconf;
 
 
-import com.udea.testing.program1.statisticsService.subscribers.MeanSubscriber;
-import com.udea.testing.program1.statisticsService.subscribers.StdDeviationSubscriber;
+import com.udea.testing.program1.statisticsService.subscribers.LinearRegSubscriber;
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -34,21 +33,11 @@ public class RabbitConf {
 
 
     @Bean
-    public SimpleMessageListenerContainer containerMean(ConnectionFactory connectionFactory) {
+    public SimpleMessageListenerContainer containerLinearReg(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer();
         messageListenerContainer.setConnectionFactory(connectionFactory);
-        messageListenerContainer.setQueueNames("udea.testing.calculate.mean");
-        messageListenerContainer.setMessageListener(new MeanSubscriber());
-        messageListenerContainer.setAcknowledgeMode(AcknowledgeMode.AUTO);
-        return messageListenerContainer;
-    }
-
-    @Bean
-    public SimpleMessageListenerContainer containerstdDeviation(ConnectionFactory connectionFactory) {
-        SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer();
-        messageListenerContainer.setConnectionFactory(connectionFactory);
-        messageListenerContainer.setQueueNames("udea.testing.calculate.stddeviation");
-        messageListenerContainer.setMessageListener(new StdDeviationSubscriber());
+        messageListenerContainer.setQueueNames("udea.testing.calculate.linear");
+        messageListenerContainer.setMessageListener(new LinearRegSubscriber());
         messageListenerContainer.setAcknowledgeMode(AcknowledgeMode.AUTO);
         return messageListenerContainer;
     }

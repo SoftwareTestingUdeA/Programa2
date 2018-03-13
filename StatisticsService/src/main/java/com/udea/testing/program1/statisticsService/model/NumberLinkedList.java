@@ -12,22 +12,20 @@ public class NumberLinkedList {
     private Node last;
     private Integer size;
 
-    public NumberLinkedList() {
+    public NumberLinkedList(Double[] x, Double[] y) {
         first = null;
         last = null;
         size = 0;
+        for (int i = 0; i < x.length; i++){
+            this.insert(x[i], y[i]);
+            size = size + 1;
+        }
     }
 
-    public NumberLinkedList(Node first, Node last, Integer size) {
+    public NumberLinkedList(Node first, Node last) {
         this.first = first;
-        this.size = size;
         this.last = last;
-        if (last == null) {
-            this.last = first;
-        }
-        if (first == null) {
-            this.first = last;
-        }
+        this.size = size;
     }
 
     public Node getFirst() {
@@ -60,8 +58,8 @@ public class NumberLinkedList {
         return false;
     }
 
-    public void insert(Double value) {
-        Node node = new Node(value, null);
+    public void insert(Double valueX, Double valueY) {
+        Node node = new Node(valueX, valueY, null);
         if (first == null) {
             first = node;
             last = first;

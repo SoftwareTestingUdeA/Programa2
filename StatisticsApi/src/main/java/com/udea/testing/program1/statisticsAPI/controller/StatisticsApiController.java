@@ -23,22 +23,11 @@ public class StatisticsApiController {
 
     Publisher publisher = new Publisher();
 
-    @RequestMapping(method = RequestMethod.POST, value = "/mean")
-    public ResponseEntity<NumberSet> createMeanRequest(@RequestBody NumberSet numberSet) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            publisher.publishMessageAsync("udea.testing.calculate", "mean", mapper.writeValueAsString(numberSet));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<NumberSet>(HttpStatus.OK);
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/stddeviation")
+    @RequestMapping(method = RequestMethod.POST, value = "/linearreg")
     public ResponseEntity<NumberSet> createStdDeviationRequest(@RequestBody NumberSet numberSet) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            publisher.publishMessageAsync("udea.testing.calculate", "stddeviation", mapper.writeValueAsString(numberSet));
+            publisher.publishMessageAsync("udea.testing.calculate", "linear", mapper.writeValueAsString(numberSet));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -47,6 +36,6 @@ public class StatisticsApiController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String getRequest() {
-        return "OKOKOK";
+        return "OK";
     }
 }
