@@ -1,5 +1,7 @@
 package com.udea.testing.program1.statisticsService.model;
 
+import org.springframework.data.annotation.Id;
+
 /**
  * @author William Hincapie - daemonsoft@gmail.com
  * @author Juan Pablo Ospina - jpoh97@gmail.com
@@ -7,6 +9,7 @@ package com.udea.testing.program1.statisticsService.model;
  * @version 0.3
  */
 public class NumberSet {
+    @Id
     String uuid;
     Double[] setX;
     Double[] setY;
@@ -122,7 +125,7 @@ public class NumberSet {
             sumY = sumY + node.getY();
             node = node.getLink();
         }
-        this.setCorrelation((this.getList().getSize()*sumXY - sumX*sumY)/(Math.sqrt((this.getList().getSize()*xX-Math.pow(sumX,2.0))*(this.getList().getSize()*yY-Math.pow(sumY,2.0)))));
+        this.setCorrelation((this.getList().getSize() * sumXY - sumX * sumY) / (Math.sqrt((this.getList().getSize() * xX - Math.pow(sumX, 2.0)) * (this.getList().getSize() * yY - Math.pow(sumY, 2.0)))));
     }
 
     public void calculateBeta() {

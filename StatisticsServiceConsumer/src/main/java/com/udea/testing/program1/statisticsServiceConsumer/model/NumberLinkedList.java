@@ -4,7 +4,7 @@ package com.udea.testing.program1.statisticsServiceConsumer.model;
  * @author William Hincapie - daemonsoft@gmail.com
  * @author Juan Pablo Ospina - jpoh97@gmail.com
  * @author Daniel Martinez - danielmartinezg95@gmail.com
- * @version 0.1
+ * @version 0.3
  */
 public class NumberLinkedList {
 
@@ -12,10 +12,14 @@ public class NumberLinkedList {
     private Node last;
     private Integer size;
 
-    public NumberLinkedList() {
+    public NumberLinkedList(Double[] x, Double[] y) {
         first = null;
         last = null;
         size = 0;
+        for (int i = 0; i < x.length; i++){
+            this.insert(x[i], y[i]);
+            size = size + 1;
+        }
     }
 
     public NumberLinkedList(Node first, Node last) {
@@ -54,8 +58,8 @@ public class NumberLinkedList {
         return false;
     }
 
-    public void insert(Double value) {
-        Node node = new Node(value, null);
+    public void insert(Double valueX, Double valueY) {
+        Node node = new Node(valueX, valueY, null);
         if (first == null) {
             first = node;
             last = first;

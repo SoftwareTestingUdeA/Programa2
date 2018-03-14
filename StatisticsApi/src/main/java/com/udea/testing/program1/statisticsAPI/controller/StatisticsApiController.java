@@ -3,13 +3,14 @@ package com.udea.testing.program1.statisticsAPI.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.udea.testing.program1.statisticsAPI.model.NumberSet;
+import com.udea.testing.program1.statisticsAPI.model.StatisticsRepository;
 import com.udea.testing.program1.statisticsAPI.rabbitconf.Publisher;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author William Hincapie - daemonsoft@gmail.com
@@ -21,11 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/{uuid}")
 public class StatisticsApiController {
 
+    @Autowired
+    StatisticsRepository statisticsRepository;
     Publisher publisher = new Publisher();
 
     @RequestMapping(method = RequestMethod.POST, value = "/linearreg")
-    public ResponseEntity<NumberSet> createStdDeviationRequest(@RequestBody NumberSet numberSet) {
+    public ResponseEntity<NumberSet> createStdDeviationRequest(@RequestBody NumberSet numberSet,@PathVariable("uuid") String uuid) {
         ObjectMapper mapper = new ObjectMapper();
+        numberSet.setUuid(uuid);
         try {
             publisher.publishMessageAsync("udea.testing.calculate", "linear", mapper.writeValueAsString(numberSet));
         } catch (JsonProcessingException e) {
@@ -35,7 +39,7 @@ public class StatisticsApiController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String getRequest() {
-        return "OK";
+    public ResponseEntity<?> getRequest() {
+        return new ResponseEntity<>(statisticsRepository.findAll(),HttpStatus.OK);
     }
 }

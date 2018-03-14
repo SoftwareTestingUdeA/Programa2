@@ -19,11 +19,12 @@ import java.io.IOException;
 @Component
 public class LinearRegSubscriber implements MessageListener {
 
+
     @Override
     public void onMessage(Message message) {
         ObjectMapper objectMapper = new ObjectMapper();
         Publisher publisher = new Publisher();
-        NumberSet numberSet = null;
+        NumberSet numberSet;
         try {
             numberSet = objectMapper.readValue(message.getBody(), NumberSet.class);
             numberSet.setList(new NumberLinkedList(numberSet.getSetX(), numberSet.getSetY()));

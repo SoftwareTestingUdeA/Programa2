@@ -1,12 +1,13 @@
 package com.udea.testing.program1.statisticsServiceConsumer.rabbitconf;
 
-import com.udea.testing.program1.statisticsServiceConsumer.subscribers.MeanResultSubscriber;
-import com.udea.testing.program1.statisticsServiceConsumer.subscribers.StdDeviationResultSubscriber;
+import com.udea.testing.program1.statisticsServiceConsumer.model.StatisticsRepository;
+import com.udea.testing.program1.statisticsServiceConsumer.subscribers.LinearResultSubscriber;
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +19,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RabbitConf {
-
+@Autowired
+    LinearResultSubscriber linearResultSubscriber;
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory("clam.rmq.cloudamqp.com");
@@ -32,21 +34,11 @@ public class RabbitConf {
     }
 
     @Bean
-    public SimpleMessageListenerContainer containerMean(ConnectionFactory connectionFactory) {
+    public SimpleMessageListenerContainer containerLinear(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer();
         messageListenerContainer.setConnectionFactory(connectionFactory);
-        messageListenerContainer.setQueueNames("udea.testing.result.mean");
-        messageListenerContainer.setMessageListener(new MeanResultSubscriber());
-        messageListenerContainer.setAcknowledgeMode(AcknowledgeMode.AUTO);
-        return messageListenerContainer;
-    }
-
-    @Bean
-    public SimpleMessageListenerContainer containerstdDeviation(ConnectionFactory connectionFactory) {
-        SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer();
-        messageListenerContainer.setConnectionFactory(connectionFactory);
-        messageListenerContainer.setQueueNames("udea.testing.result.stddeviation");
-        messageListenerContainer.setMessageListener(new StdDeviationResultSubscriber());
+        messageListenerContainer.setQueueNames("udea.testing.result.linear");
+        messageListenerContainer.setMessageListener(linearResultSubscriber);
         messageListenerContainer.setAcknowledgeMode(AcknowledgeMode.AUTO);
         return messageListenerContainer;
     }
