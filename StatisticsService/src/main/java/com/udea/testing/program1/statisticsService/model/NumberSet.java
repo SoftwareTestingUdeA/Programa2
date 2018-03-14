@@ -108,20 +108,34 @@ public class NumberSet {
 
     public void calculateCorrelation() {
         this.calculateBeta();
-
+        Node node = this.getList().getFirst();
+        Double sumXY = 0.0;
+        Double yY = 0.0;
+        Double xX = 0.0;
+        Double sumX = 0.0;
+        Double sumY = 0.0;
+        while (node != null) {
+            sumXY = sumXY + node.getX() * node.getY();
+            yY = yY + Math.pow(node.getY(), 2.0);
+            xX = xX + Math.pow(node.getX(), 2.0);
+            sumX = sumX + node.getX();
+            sumY = sumY + node.getY();
+            node = node.getLink();
+        }
+        this.setCorrelation((this.getList().getSize()*sumXY - sumX*sumY)/(Math.sqrt((this.getList().getSize()*xX-Math.pow(sumX,2.0))*(this.getList().getSize()*yY-Math.pow(sumY,2.0)))));
     }
 
     public void calculateBeta() {
         this.calculateMean();
         Node node = this.getList().getFirst();
         Double sumXY = 0.0;
-        Double sqrtX = 0.0;
+        Double xX = 0.0;
         while (node != null) {
             sumXY = sumXY + node.getX() * node.getY();
-            sqrtX = sqrtX + Math.pow(node.getX(), 2.0);
+            xX = xX + Math.pow(node.getX(), 2.0);
             node = node.getLink();
         }
-        this.beta1 = (sumXY - this.getList().getSize() * this.getMeanX() * this.getMeanY()) / (sqrtX - this.getList().getSize() * Math.pow(this.getMeanX(), 2.0));
-        this.beta0 = this.getMeanY() - this.getBeta1()*this.getMeanX();
+        this.setBeta1(sumXY - this.getList().getSize() * this.getMeanX() * this.getMeanY() / (xX - this.getList().getSize() * Math.pow(this.getMeanX(), 2.0)));
+        this.setBeta0(beta0 = this.getMeanY() - this.getBeta1() * this.getMeanX());
     }
 }
