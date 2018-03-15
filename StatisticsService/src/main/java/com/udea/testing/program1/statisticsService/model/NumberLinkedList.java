@@ -22,7 +22,7 @@ public class NumberLinkedList {
         }
     }
 
-    public NumberLinkedList(Node first, Node last) {
+    public NumberLinkedList(Node first, Node last, Integer size) {
         this.first = first;
         this.last = last;
         this.size = size;

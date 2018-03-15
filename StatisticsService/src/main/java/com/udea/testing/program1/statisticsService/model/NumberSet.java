@@ -134,11 +134,22 @@ public class NumberSet {
         Double sumXY = 0.0;
         Double xX = 0.0;
         while (node != null) {
-            sumXY = sumXY + node.getX() * node.getY();
+            sumXY = sumXY + (node.getX() * node.getY());
             xX = xX + Math.pow(node.getX(), 2.0);
             node = node.getLink();
         }
-        this.setBeta1(sumXY - this.getList().getSize() * this.getMeanX() * this.getMeanY() / (xX - this.getList().getSize() * Math.pow(this.getMeanX(), 2.0)));
-        this.setBeta0(beta0 = this.getMeanY() - this.getBeta1() * this.getMeanX());
+        this.setBeta1((sumXY - (this.getList().getSize() * this.getMeanX() * this.getMeanY())) / (((xX) - (this.getList().getSize() * Math.pow(this.getMeanX(), 2.0)))));
+        this.setBeta0((this.getMeanY()) - (this.getBeta1() * this.getMeanX()));
+    }
+    
+    public double getCorrelationPow() {
+    	double correlationPow = 0.0;
+    	correlationPow= Math.pow(this.correlation,2.0);
+    	
+    	return correlationPow;
+    }
+    
+    public double getYk(double xK) {
+    	return this.getBeta0() + (this.getBeta1() * xK);
     }
 }
