@@ -7,6 +7,7 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,6 +19,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RabbitConf {
+    @Autowired
+    LinearRegSubscriber linearRegSubscriber;
 
     @Bean
     public ConnectionFactory connectionFactory() {
@@ -37,7 +40,7 @@ public class RabbitConf {
         SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer();
         messageListenerContainer.setConnectionFactory(connectionFactory);
         messageListenerContainer.setQueueNames("udea.testing.calculate.linear");
-        messageListenerContainer.setMessageListener(new LinearRegSubscriber());
+        messageListenerContainer.setMessageListener(linearRegSubscriber);
         messageListenerContainer.setAcknowledgeMode(AcknowledgeMode.AUTO);
         return messageListenerContainer;
     }

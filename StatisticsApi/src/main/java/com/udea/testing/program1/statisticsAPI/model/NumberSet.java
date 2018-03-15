@@ -1,7 +1,5 @@
 package com.udea.testing.program1.statisticsAPI.model;
 
-import java.util.List;
-
 /**
  * @author William Hincapie - daemonsoft@gmail.com
  * @author Juan Pablo Ospina - jpoh97@gmail.com
@@ -9,7 +7,7 @@ import java.util.List;
  * @version 0.1
  */
 public class NumberSet {
-    String uuid;
+    String id;
     Double[] setX;
     Double[] setY;
     NumberLinkedList list;
@@ -22,12 +20,12 @@ public class NumberSet {
     public NumberSet() {
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getId() {
+        return id;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Double[] getSetX() {

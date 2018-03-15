@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.UUID;
 
 /**
  * @author William Hincapie - daemonsoft@gmail.com
@@ -19,7 +19,7 @@ import java.util.List;
  * @version 0.1
  */
 @RestController
-@RequestMapping("/{uuid}")
+@RequestMapping("/")
 public class StatisticsApiController {
 
     @Autowired
@@ -27,9 +27,9 @@ public class StatisticsApiController {
     Publisher publisher = new Publisher();
 
     @RequestMapping(method = RequestMethod.POST, value = "/linearreg")
-    public ResponseEntity<NumberSet> createStdDeviationRequest(@RequestBody NumberSet numberSet,@PathVariable("uuid") String uuid) {
+    public ResponseEntity<NumberSet> createStdDeviationRequest(@RequestBody NumberSet numberSet) {
         ObjectMapper mapper = new ObjectMapper();
-        numberSet.setUuid(uuid);
+        numberSet.setId(UUID.randomUUID().toString());
         try {
             publisher.publishMessageAsync("udea.testing.calculate", "linear", mapper.writeValueAsString(numberSet));
         } catch (JsonProcessingException e) {

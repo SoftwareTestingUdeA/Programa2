@@ -10,7 +10,7 @@ import org.springframework.data.annotation.Id;
  */
 public class NumberSet {
     @Id
-    String uuid;
+    String id;
     Double[] setX;
     Double[] setY;
     NumberLinkedList list;
@@ -23,12 +23,12 @@ public class NumberSet {
     public NumberSet() {
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getId() {
+        return id;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Double[] getSetX() {
