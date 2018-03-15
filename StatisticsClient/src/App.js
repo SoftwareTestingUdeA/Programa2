@@ -34,8 +34,10 @@ class App extends Component {
     document.getElementById("show").innerHTML = "";
     for(var i in this.state.array) {
 
-      var htmlProducts = " <br/> <div class=\"blue-grey darken-4 card\"><div class=\"card-content white-text\"><b>El valor de Beta 0 es: </b>" 
-                 + this.state.array[i].beta0 + "<br/><b>El valor de Beta 1 es: </b>" +this.state.array[i].beta1
+      var htmlProducts = " <br/> <div class=\"blue-grey darken-4 card\"><div class=\"card-content white-text\"><b>El conjunto X es: </b>"
+                 + this.state.array[i].setX + "<br/><b>El tamaño del conjunto X es: </b>" + this.state.array[i].setX.length + "<br/><br/<b>El conjunto Y es: </b>"
+                 + this.state.array[i].setY + "<br/><b>El tamaño del conjunto Y es: </b>" + this.state.array[i].setY.length + "<br/><br/"
+                 + "<b>El valor de Beta 0 es: </b>" + this.state.array[i].beta0 + "<br/><b>El valor de Beta 1 es: </b>" +this.state.array[i].beta1
                  + "<br/> <b>El promedio de X es: </b>" +this.state.array[i].meanX  
                  + "</b><br/> <b>El promedio de Y es: </b>" +this.state.array[i].meanY 
                  + "</b><br/> <b>El valor de la correlación es: </b>" +this.state.array[i].correlation + "</div></div>";
