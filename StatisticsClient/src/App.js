@@ -3,32 +3,92 @@ import axios from 'axios'
 import { Button, Card, Row, Col } from 'react-materialize'
 
 const url = 'https://stapiudea.herokuapp.com'
+<<<<<<< HEAD
+=======
+const urlPost = 'https://stapiudea.herokuapp.com/linearreg'
+>>>>>>> 2c595fbff6da602ab05b822cb7d03346fbdeafdf
 
 
 class App extends Component {
   constructor(props){
     super(props); //propiedades
-    this.getProducts()
+    this.getElements()
     this.state={
-      products: []
+      products: [],
+      numberx: '',
+      numbery: '',
+      setx: [],
+      sety: []
     };
-    this.getProducts = this.getProducts.bind(this); 
-    this.saveProducts = this.saveProducts.bind(this); 
+    this.getElements = this.getElements.bind(this); 
+    this.addElement = this.addElement.bind(this); 
+    this.saveElement = this.saveElement.bind(this); 
+    this.addElementToSet = this.addElementToSet.bind(this); 
+    this.validateNumberX = this.validateNumberX.bind(this); 
+    this.validateNumberY = this.validateNumberY.bind(this); 
   }
 
-  getProducts(){
+  saveElement(e){
+    e.preventDefault();
+    var self = this;
+    var json = JSON.stringify({
+              setX: this.state.setx,
+              setY: this.state.sety
+            })
+    console.log(json)
+    if(this.state.setx.length > 0 && this.state.setx.length > 0 ) {
+      fetch(urlPost, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+              setX: this.state.setx,
+              setY: this.state.sety
+            })
+        });
+      document.getElementById("setsx").innerHTML = "";  
+      document.getElementById("setsy").innerHTML = "";  
+    } else {
+      document.getElementById("setsx").innerHTML = "Agregue elementos a ambos conjuntos";  
+    }
+  }
+
+
+  addElementToSet(){
+    var self = this;
+    var numbersetx = document.getElementById("setx").value;
+    var numbersety = document.getElementById("sety").value;
+    console.log(numbersetx < 0)
+    if(numbersetx == "" || numbersetx < 0) {
+      document.getElementById("setsx").innerHTML = "Ingrese un numero valido para el conjunto x";  
+      return;
+    }
+    if(numbersety == "" || numbersety < 0) {
+      document.getElementById("setsy").innerHTML = "Ingrese un numero valido para el conjunto y";  
+      return;
+    }
+    this.state.setx.push(parseInt(numbersetx));
+    this.state.sety.push(parseInt(numbersety));
+    this.state.numberx = '';
+    this.state.numbery = '';
+    document.getElementById("setsx").innerHTML = this.state.setx;  
+    document.getElementById("setsy").innerHTML = this.state.sety;      
+    document.getElementById("setx").value = '';
+    document.getElementById("sety").value = '';
+  }
+
+  getElements(){
     var self = this;
 
     axios.get(url).then(function (response) {
 
-      self.saveProducts(response);
+      self.addElement(response);
     })
     .catch(function (error) {
       console.log(error);
     })
   }
 
-  saveProducts(response) {
+  addElement(response) {
     this.setState({array: response.data});
     console.log(this.state.array);
     document.getElementById("show").innerHTML = "";
@@ -47,13 +107,46 @@ class App extends Component {
     }
   }
 
+validateNumberX(evt) {
+  const numberx = (evt.target.validity.valid) ? evt.target.value : this.state.numberx;    
+    this.setState({ numberx });
+}
+validateNumberY(evt) {
+  const numbery = (evt.target.validity.valid) ? evt.target.value : this.state.numbery;    
+    this.setState({ numbery });
+}
+
  	render(){ //aqui va todo lo referente a la vista
      return (
-       <div class="container center">
+       <div className="container center">
          <br/>
-         <br/>         
          <Row>
-          <Col s={12} m={10} l={8} className='grid-example offset-m1 offset-l2'> 
+          <Col s={12} m={12} l={10} className='grid-example offset-m1 offset-l1'> 
+          <h3>
+            Agregar Elementos
+          </h3>
+          <label>
+            <span className="text">Conjunto 1:</span>
+            <input type="text" maxLength="9" id="setx" pattern="[0-9]*" onInput={this.validateNumberX.bind(this)} value={this.state.numberx}/><br/>
+          </label>
+          <label>
+            <span className="text">Conjunto 2:</span>
+            <input type="text" maxLength="9" id="sety" pattern="[0-9]*" onInput={this.validateNumberY.bind(this)} value={this.state.numbery}/><br/>
+          </label>
+          <Button className="btn" type="submit" onClick={this.addElementToSet} >AGREGAR</Button>
+          <br/><br/>
+          <form
+              method="post"
+              onSubmit={this.saveElement}>
+              <div id="setsx"></div>
+              <div id="setsy"></div>
+              <br/>
+              <Button className="btn" type="submit">ENVIAR</Button>       
+            </form>
+            </Col>
+            </Row>
+         <Row>
+          <Col s={12} m={12} l={10} className='grid-example offset-m1 offset-l1'> 
             <h3>Datos</h3>
             <div id="show"></div>
           </Col>
@@ -65,3 +158,4 @@ class App extends Component {
  }
 
  export default App;
+
