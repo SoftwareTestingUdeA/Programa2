@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import { Button, Card, Row, Col } from 'react-materialize'
 
-const url = 'http://stapiudea.herokuapp.com'
+const url = 'https://stapiudea.herokuapp.com'
 
 
 class App extends Component {

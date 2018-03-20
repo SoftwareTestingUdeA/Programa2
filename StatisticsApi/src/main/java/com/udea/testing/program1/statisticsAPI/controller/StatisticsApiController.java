@@ -26,6 +26,7 @@ public class StatisticsApiController {
     StatisticsRepository statisticsRepository;
     Publisher publisher = new Publisher();
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.POST, value = "/linearreg")
     public ResponseEntity<NumberSet> createStdDeviationRequest(@RequestBody NumberSet numberSet) {
         ObjectMapper mapper = new ObjectMapper();
@@ -37,9 +38,9 @@ public class StatisticsApiController {
         }
         return new ResponseEntity<NumberSet>(HttpStatus.OK);
     }
-
+    @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> getRequest() {
-        return new ResponseEntity<>(statisticsRepository.findAll(),HttpStatus.OK);
+        return new ResponseEntity<>(statisticsRepository.findAll(), HttpStatus.OK);
     }
 }
